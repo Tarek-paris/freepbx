@@ -1,2 +1,2 @@
 From technoexpress/freepbx:latest
-EXPOSE 8080
+EXPOSE 9990
