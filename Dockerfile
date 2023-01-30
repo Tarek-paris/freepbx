@@ -1,2 +1,2 @@
-From technoexpress/freepbx:latest
-EXPOSE 9990
+From docker pull epandi/asterisk-freepbx-rpi:15:latest
+EXPOSE 8080
