@@ -1,2 +1,2 @@
-From epandi/asterisk-freepbx-rpi:15
+From tiredofit/freepbx:latest
 EXPOSE 8080
