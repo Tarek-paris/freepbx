@@ -1,2 +1,2 @@
 From tiredofit/freepbx:latest
-EXPOSE 8080
+EXPOSE 80
