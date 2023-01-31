@@ -14,7 +14,7 @@ ENV ASTERISK_VERSION=17.9.3 \
     RTP_FINISH=20000
 
 ### Pin libxml2 packages to Debian repositories
-RUN echo "Package: libxml2*" > /etc/apt/preferences.d/libxml2 && \
+    echo "Package: libxml2*" > /etc/apt/preferences.d/libxml2 && \
     echo "Pin: release o=Debian,n=buster" >> /etc/apt/preferences.d/libxml2 && \
     echo "Pin-Priority: 501" >> /etc/apt/preferences.d/libxml2 && \
     APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=TRUE && \
