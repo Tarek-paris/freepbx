@@ -164,14 +164,7 @@ ENV ASTERISK_VERSION=17.9.3 \
     addgroup --gid 2600 asterisk && \
     adduser --uid 2600 --gid 2600 --gecos "Asterisk User" --disabled-password asterisk && \
     \
-### Build SpanDSP
-    mkdir -p /usr/src/spandsp && \
-    curl -kL http://sources.buildroot.net/spandsp/spandsp-${SPANDSP_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/spandsp && \
-    cd /usr/src/spandsp && \
-    ./configure --prefix=/usr && \
-    make && \
-    make install && \
-    \
+
 ### Build Asterisk
     cd /usr/src && \
     mkdir -p asterisk && \
@@ -245,26 +238,8 @@ ENV ASTERISK_VERSION=17.9.3 \
     make && \
     make install && \
     \
-#### Add USB Dongle support
-    git clone https://github.com/rusxakep/asterisk-chan-dongle /usr/src/asterisk-chan-dongle && \
-    cd /usr/src/asterisk-chan-dongle && \
-    git checkout tags/$DONGLE_VERSION && \
-    ./bootstrap && \
-    ./configure --with-astversion=$ASTERISK_VERSION && \
-    make && \
-    make install && \
-    \
-    ldconfig && \
-    \
-### Cleanup
-    mkdir -p /var/run/fail2ban && \
-    cd / && \
-    rm -rf /usr/src/* /tmp/* /etc/cron* && \
-    apt-get purge -y $ASTERISK_BUILD_DEPS && \
-    apt-get -y autoremove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    \
+
+
 ### FreePBX hacks
     sed -i -e "s/memory_limit = 128M/memory_limit = 256M/g" /etc/php/${PHP_VERSION}/apache2/php.ini && \
     sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php/${PHP_VERSION}/apache2/php.ini && \
@@ -279,27 +254,6 @@ ENV ASTERISK_VERSION=17.9.3 \
 ### Zabbix setup
     echo '%zabbix ALL=(asterisk) NOPASSWD:/usr/sbin/asterisk' >> /etc/sudoers && \
     \
-### Setup for data persistence
-    mkdir -p /assets/config/var/lib/ /assets/config/home/ && \
-    mv /home/asterisk /assets/config/home/ && \
-    ln -s /data/home/asterisk /home/asterisk && \
-    mv /var/lib/asterisk /assets/config/var/lib/ && \
-    ln -s /data/var/lib/asterisk /var/lib/asterisk && \
-    ln -s /data/usr/local/fop2 /usr/local/fop2 && \
-    mkdir -p /assets/config/var/run/ && \
-    mv /var/run/asterisk /assets/config/var/run/ && \
-    mv /var/lib/mysql /assets/config/var/lib/ && \
-    mkdir -p /assets/config/var/spool && \
-    mv /var/spool/cron /assets/config/var/spool/ && \
-    ln -s /data/var/spool/cron /var/spool/cron && \
-    mkdir -p /var/run/mongodb && \
-    rm -rf /var/lib/mongodb && \
-    ln -s /data/var/lib/mongodb /var/lib/mongodb && \
-    ln -s /data/var/run/asterisk /var/run/asterisk && \
-    rm -rf /var/spool/asterisk && \
-    ln -s /data/var/spool/asterisk /var/spool/asterisk && \
-    rm -rf /etc/asterisk && \
-    ln -s /data/etc/asterisk /etc/asterisk
 
 ### Networking configuration
 EXPOSE 8080 443 4445 4569 5060/udp 5160/udp 5061 5161 8001 8003 8008 8009 8025 ${RTP_START}-${RTP_FINISH}/udp
